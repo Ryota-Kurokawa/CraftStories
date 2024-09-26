@@ -14,7 +14,7 @@ struct CraftStoriesApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LogInScreen()
         }
     }
 }
