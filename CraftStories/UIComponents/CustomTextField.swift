@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CustomTextField: View {
-    @State private var typedText: String = ""
+    @Binding var typedText: String
     let labelText: String
     
     var body: some View {
@@ -27,6 +27,3 @@ struct CustomTextField: View {
     }
 }
 
-#Preview {
-    CustomTextField(labelText: "sample")
-}
