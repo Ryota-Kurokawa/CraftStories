@@ -30,7 +30,7 @@ targets:
     # ターゲットのプラットフォーム
     platform: iOS
     # デプロイメントターゲット
-    deploymentTarget: "16.0"
+    deploymentTarget: "17.0.0"
 
     # 採用するFirebaseのサービス
     dependencies:

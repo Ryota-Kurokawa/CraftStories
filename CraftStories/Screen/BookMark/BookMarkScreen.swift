@@ -1,13 +1,13 @@
 //
-//  StoriesCollection.swift
+//  BookMarkScreen.swift
 //  CraftStories
 //
-//  Created by 黒川良太 on 2024/09/26.
+//  Created by 黒川良太 on 2024/10/13.
 //
 
 import SwiftUI
 
-struct StoriesCollectionScreen: View {
+struct BookMarkScreen: View {
     let controller = StoriesCollectionController()
     @State private var isPresented = false
     @State private var selectedStory: SampleStory?
@@ -22,34 +22,21 @@ struct StoriesCollectionScreen: View {
                                 isPresented.toggle()
                                 selectedStory = story
                                 // 1秒後にアラートを閉じる
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                     isPresented.toggle()
-                                }
-                            }
-                        // 長押しで中の内容が見れる
-                            .onLongPressGesture {
-                                isPresented.toggle()
-                                selectedStory = story
-                            }
-                            .contextMenu {
-                                Button(action: {
-                                    isPresented.toggle()
-                                    selectedStory = story
-                                }) {
-                                    Label("Bookmark", systemImage: "bookmark")
                                 }
                             }
                             .scaleEffect(isPresented && selectedStory?.id == story.id ? 1.05 : 1.0)
                             .animation(.spring())
                     }
-                    .navigationTitle("Stories")
-                    .toolbarTitleDisplayMode(.inlineLarge)
                 }
             }
+            .navigationTitle("Bookmarks")
+            .toolbarTitleDisplayMode(.inlineLarge)
         }
     }
 }
 
 #Preview {
-    StoriesCollectionScreen()
+    BookMarkScreen()
 }

@@ -15,32 +15,51 @@ struct SignUpScreen: View {
     @State private var speed: Double = 0.5
     
     var body: some View {
-        ZStack {
-            Color(.gray)
-                .opacity(0.2)
-                .ignoresSafeArea()
-            LottieView(filename: "SignUp")
-            SignUpPanel()
+        ScrollView {
+            ZStack {
+                LottieView(filename: "SignUp")
+                VStack {
+                    Spacer()
+                        .frame(height: 40)
+                    SignUpPanel()
+                }
+            }
         }
+        .ignoresSafeArea(.keyboard, edges: .all)
+        .background(Color.customBackgroundColor)
     }
 }
 
 struct SignUpPanel: View {
+    
+    private let authViewController = AuthViewController()
+    @ObservedObject private var authStateManager = AuthStateManager()
+    @State private var typedEmail = ""
+    @State private var typedPassword = ""
+    @State private var typedConfirmPassword = ""
+    
     var body: some View {
         VStack {
             Text("Sign Up")
                 .font(.largeTitle)
                 .fontWeight(.heavy)
-            //                .foregroundStyle(.white)
             Spacer()
                 .frame(height: 120)
-            CustomTextField(labelText: "Email")
-            CustomTextField(labelText: "Password")
-            CustomTextField(labelText: "Confirm Password")
+            CustomTextField(typedText: $typedEmail, labelText: "Email")
+            CustomTextField(typedText: $typedPassword, labelText: "Password")
+            CustomTextField(typedText: $typedConfirmPassword, labelText: "Confirm Password")
             Spacer()
                 .frame(height: 32)
-            CustomButton(onClick: {}, label: "Sign Up")
-                .padding()
+            CustomButton(onClick: {
+                Task {
+                    do{
+                        try await authViewController.signUp(mail: typedEmail, password: typedPassword)
+                        AuthManager.shared.isLoggedIn.toggle()
+                        debugPrint(AuthManager.shared.isLoggedIn)
+                    }
+                }
+            }, label: "Sign Up")
+            .padding()
         }
     }
 }
@@ -51,3 +70,6 @@ struct SignUpPanel: View {
     SignUpScreen()
 }
 
+#Preview {
+    SignUpPanel()
+}
