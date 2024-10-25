@@ -9,43 +9,30 @@ import SwiftUI
 
 struct StoriesCollectionScreen: View {
     let controller = StoriesCollectionController()
+    
     @State private var isPresented = false
-    @State private var selectedStory: SampleStory?
+    @State var selectedStory: SampleStory = SampleStory(id: UUID(), title: "", description: "", label: "")
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    ForEach(controller.stories, id: \.id) { story in
+                    ForEach(controller.stories, id: \.self) { story in
                         SampleCustomCard(story: story)
                             .onTapGesture {
-                                isPresented.toggle()
                                 selectedStory = story
-                                // 1秒後にアラートを閉じる
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    isPresented.toggle()
-                                }
-                            }
-                        // 長押しで中の内容が見れる
-                            .onLongPressGesture {
+                                debugPrint("selectedStory: \(selectedStory)")
                                 isPresented.toggle()
-                                selectedStory = story
                             }
-                            .contextMenu {
-                                Button(action: {
-                                    isPresented.toggle()
-                                    selectedStory = story
-                                }) {
-                                    Label("Bookmark", systemImage: "bookmark")
-                                }
-                            }
-                            .scaleEffect(isPresented && selectedStory?.id == story.id ? 1.05 : 1.0)
-                            .animation(.spring())
+                            .animation(.spring)
                     }
-                    .navigationTitle("Stories")
-                    .toolbarTitleDisplayMode(.inlineLarge)
                 }
             }
+            .navigationTitle("Stories")
+            .toolbarTitleDisplayMode(.inlineLarge)
+            .navigationDestination(isPresented: $isPresented, destination: {
+                StoryDetailScreen(story: selectedStory)
+            })
         }
     }
 }

@@ -22,7 +22,7 @@ struct Story: Codable, Identifiable {
     }
 }
 
-struct SampleStory {
+struct SampleStory: Hashable {
     let id: UUID
     let title: String
     let description: String

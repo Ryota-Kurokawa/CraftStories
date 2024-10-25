@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CustomCard: View {
-    let story: Story
+    let story: SampleStory
     @State private var isBookmarked: Bool = false
     
     var body: some View {
